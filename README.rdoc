@@ -1,0 +1,29 @@
+= CreationReport
+
+
+CreationReport is an easy way to visualize how many instances of each model are being created over time.
+Keep in mind that it cannot keep track of rows that have been deleted.
+
+Note: This plugin requires 'gchartrb'. The following line should go in your environment.rb file:
+ config.gem 'gchartrb', :lib => 'google_chart'
+
+
+Example
+=======
+
+# MODEL
+def User < ActiveRecord::Base
+  include CreationReport  # Make sure that this is in your model
+
+  # the rest of your code
+end
+
+# CONTROLLER
+def usage
+  @creations_by_day_chart = User.creations_by_day_chart
+  @creations_by_hour_chart = User.creations_by_hour_of_day_chart
+end
+
+# VIEW
+<img src="<%= @creations_by_day_chart.to_url %>" alt="Google Chart" class="google_chart" />
+<img src="<%= @creations_by_hour_chart.to_url %>" alt="Google Chart" class="google_chart" />
