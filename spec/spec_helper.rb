@@ -15,6 +15,14 @@ def daily_datapoints( options={} )
   }
 end
 
+def hourly_datapoints( options={} )
+  {
+    1.hour.ago.strftime("%Y-%m-%d %H") => '200.58', 
+    Time.now.strftime("%Y-%m-%d %H") => '205.39'
+  }
+end
+
+
 def specific_daily_datapoints
   [
     ['2007-12-03', 62.1],

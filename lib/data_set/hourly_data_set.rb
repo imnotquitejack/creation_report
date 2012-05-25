@@ -20,12 +20,9 @@ class DataSet::HourlyDataSet < DataSet
 
   protected
   def fill_with_zeroes( hours )
-    puts "Filling to #{@count}..."
-    (0..@count).each do |i|
-      puts "Adding #{i.hours.ago.strftime("%Y-%m-%d %H")}"
+    (0..@count-1).each do |i|
       @datapoints[i.hours.ago.strftime("%Y-%m-%d %H")] ||= 0
     end
-
     @datapoints = @datapoints.sort
   end
 end

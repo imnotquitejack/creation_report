@@ -22,7 +22,7 @@ module CreationReport
       def created_by_hour
         DataSet::HourlyDataSet.new(
           count(
-            :group => "DATE_FORMAT(#{table_name}.created_at,'%Y-%m-%d %h')", 
+            :group => "DATE_FORMAT(#{table_name}.created_at,'%Y-%m-%d %H')", 
             :order => "#{table_name}.id ASC", 
             :conditions => ["#{table_name}.created_at > ?", 24.hours.ago]
           ), 24
