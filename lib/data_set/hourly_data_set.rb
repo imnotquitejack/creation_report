@@ -11,6 +11,7 @@ class DataSet::HourlyDataSet < DataSet
     end
 
     fill_with_zeroes(@count)
+    trim_to_limit
   end
   
   # Array of dates corresponding to datapoints in "2009-11-18" format
@@ -24,5 +25,9 @@ class DataSet::HourlyDataSet < DataSet
       @datapoints[i.hours.ago.strftime("%Y-%m-%d %H")] ||= 0
     end
     @datapoints = @datapoints.sort
+  end
+
+  def trim_to_limit
+    @datapoints = @datapoints.slice( 0-@count, @count )
   end
 end
