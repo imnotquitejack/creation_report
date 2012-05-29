@@ -46,4 +46,40 @@ describe CreationReport do
     Post.average_created_at_this_hour.should be_a Integer
   end
 
+  context "hourly data" do
+    before(:all) do
+      Post.delete_all
+      Post.record_timestamps = false
+      20.times { Post.create(:name => "Sample", :created_at => 4.hours.ago, :updated_at => 4.hours.ago) }
+      15.times { Post.create(:name => "Sample", :created_at => 3.hours.ago, :updated_at => 3.hours.ago) }
+      25.times { Post.create(:name => "Sample", :created_at => 2.hours.ago, :updated_at => 2.hours.ago) }
+      50.times { Post.create(:name => "Sample", :created_at => 10.minutes.ago, :updated_at => 10.minutes.ago) }
+      Post.record_timestamps = true
+    end
+
+    it "should have created the posts" do
+      Post.count.should be_between 100, 200
+    end
+
+    it "can aggregate data by hour" do
+      Post.created_by_hour.should be_a DataSet::HourlyDataSet
+    end
+
+    it "should have the most recent hour" do
+      Post.created_by_hour.max_date.should == Time.now.strftime("%Y-%m-%d %H")
+    end
+
+    it "should have the appropriate data" do
+      Post.created_by_hour.values.should include(20)
+      Post.created_by_hour.value_for_date(Time.now.strftime("%Y-%m-%d %H")).should == 50
+      Post.created_by_hour.value_for_date(1.hours.ago.strftime("%Y-%m-%d %H")).should == 0
+      Post.created_by_hour.value_for_date(2.hours.ago.strftime("%Y-%m-%d %H")).should == 25
+      Post.created_by_hour.value_for_date(3.hours.ago.strftime("%Y-%m-%d %H")).should == 15
+      Post.created_by_hour.value_for_date(4.hours.ago.strftime("%Y-%m-%d %H")).should == 20
+      Post.created_by_hour.value_for_date(18.hours.ago.strftime("%Y-%m-%d %H")).should == 0
+    end
+
+  end
+
+
 end
