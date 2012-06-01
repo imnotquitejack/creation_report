@@ -19,13 +19,13 @@ module CreationReport
     module ClassMethods
       @@number_of_days = 1000
       
-      def created_by_hour
+      def created_by_hour( count = 24)
         DataSet::HourlyDataSet.new(
           count(
             :group => "DATE_FORMAT( CONVERT_TZ(#{table_name}.created_at, '+0:00', '#{((Time.zone.utc_offset/3600 + (Time.now.dst? ? 1 : 0)) rescue '-0')}:00'),'%Y-%m-%d %H')", 
             :order => "#{table_name}.id ASC", 
-            :conditions => ["#{table_name}.created_at > ?", 24.hours.ago]
-          ), 24
+            :conditions => ["#{table_name}.created_at > ?", count.hours.ago]
+          ), count
         )
       end
 

@@ -61,6 +61,10 @@ describe CreationReport do
       Post.count.should be_between 100, 200
     end
 
+    it "can have a flexible number of hours" do
+      Post.created_by_hour(48).datapoints.length.should be 48
+    end
+
     it "can aggregate data by hour" do
       Post.created_by_hour.should be_a DataSet::HourlyDataSet
     end
