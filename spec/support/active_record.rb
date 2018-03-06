@@ -1,21 +1,31 @@
 # VERY Helpful:
 # http://iain.nl/testing-activerecord-in-isolation
+require 'pry'
 
 require 'active_record'
-require 'mysql2'
-require 'rspec/rails/extensions/active_record/base'
+require 'support/active_record'
+# require 'rspec/rails/extensions/active_record/base'
 require 'active_support/buffered_logger'
 
 ActiveRecord::Base.establish_connection(
-  :adapter => "mysql", :database => "arbitrary", 
-  :username => 'root', :password => 'root', 
-  :socket => "/Applications/MAMP/tmp/mysql/mysql.sock"
+  adapter: 'mysql2', database: 'arbitrary',
+  encoding: 'utf8', pool: 5,
+  username: 'root', password: 'root',
+  host: '127.0.0.1', port: 3306
 )
 
 RSpec.configure do |config|
   config.before(:suite) do
-    ActiveRecord::Migration.drop_table :posts rescue nil
-    ActiveRecord::Migration.drop_table :comments rescue nil
+    begin
+      ActiveRecord::Migration.drop_table :posts
+    rescue StandardError
+      nil
+    end
+    begin
+      ActiveRecord::Migration.drop_table :comments
+    rescue StandardError
+      nil
+    end
     ActiveRecord::Migration.create_table :posts do |t|
       t.string :name
       t.timestamps
