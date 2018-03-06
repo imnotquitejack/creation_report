@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'gchartrb'
   s.add_dependency 'mysql2', '~> 0.3.10'
-  s.add_dependency 'rails', '~> 3.2.15'
+  s.add_dependency 'rails', '~> 4.1.11'
   s.add_dependency 'rspec'
 
   s.add_development_dependency 'pry'

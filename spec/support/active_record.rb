@@ -4,8 +4,6 @@ require 'pry'
 
 require 'active_record'
 require 'support/active_record'
-# require 'rspec/rails/extensions/active_record/base'
-require 'active_support/buffered_logger'
 
 ActiveRecord::Base.establish_connection(
   adapter: 'mysql2', database: 'arbitrary',
